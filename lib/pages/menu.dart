@@ -5,8 +5,6 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color:
-            Color.fromARGB(255, 199, 149, 0), // Background color set to yellow
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
@@ -91,8 +89,8 @@ class MenuPage extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 10.0),
         padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(
-              0.8), // Slightly opaque to stand out against the yellow background
+          color: Colors
+              .yellow, // Slightly opaque to stand out against the yellow background
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(

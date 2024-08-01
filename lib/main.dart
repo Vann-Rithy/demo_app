@@ -4,6 +4,7 @@ import 'pages/video.dart';
 import 'pages/idea.dart';
 import 'pages/calendar.dart';
 import 'pages/menu.dart';
+import 'pages/profile.dart';
 
 void main() {
   runApp(MyApp());
@@ -76,37 +77,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CircleAvatar(
-            radius: 20,
-            backgroundImage: AssetImage(
-                'assets/profile.jpg'), // Replace with your profile image asset
-          ),
-        ),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/logo.png',
-                width: 45), // Replace with your logo icon
-            SizedBox(width: 8),
-            Text('ជំនឿ-ជំនួញ',
-                style: TextStyle(fontSize: 20, color: Colors.red)),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                // Handle notification icon press
-              },
-            ),
-          ),
-        ],
-      ),
+      appBar: _selectedIndex == 0 ? _buildAppBar() : null,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
         // Set background color here
@@ -124,6 +95,55 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      leading: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InkWell(
+          onTap: () {
+            // Navigate to the profile page
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          },
+          child: CircleAvatar(
+            radius: 20,
+            backgroundImage: AssetImage(
+                'assets/profile.jpg'), // Replace with your profile image asset
+          ),
+        ),
+      ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: Image.asset('assets/logo.png', width: 45),
+          ),
+          SizedBox(width: 8),
+          Text('ជំនឿ-ជំនួញ',
+              style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.red,
+                  fontFamily: 'Khmer OS Moul')),
+        ],
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: IconButton(
+            color: Colors.red,
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notification icon press
+            },
+          ),
+        ),
+      ],
     );
   }
 

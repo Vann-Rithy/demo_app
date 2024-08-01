@@ -8,50 +8,75 @@ class IdeaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // Number of columns in the grid
-            crossAxisSpacing: 16.0, // Space between columns
-            mainAxisSpacing: 16.0, // Space between rows
-            childAspectRatio: 1.2, // Aspect ratio of each child
-          ),
-          itemCount: 4, // Number of items in the grid
-          itemBuilder: (context, index) {
-            return Card(
-              elevation: 5,
-              color: Color(0xFFFFC107),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: InkWell(
-                onTap: () {
-                  _onGridItemTap(context, index);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      _getGridItemIcon(index),
-                      size: 40,
-                      color: Colors.black,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      _getGridItemText(index),
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Title
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'ចំណេះដឹង',
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red, // Color for the title
                 ),
               ),
-            );
-          },
+            ),
+            // Grid of items
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: GridView.builder(
+                shrinkWrap:
+                    true, // Allows the GridView to be within SingleChildScrollView
+                physics:
+                    NeverScrollableScrollPhysics(), // Prevent scrolling within the GridView
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3, // Number of columns in the grid
+                  crossAxisSpacing: 2.0, // Space between columns
+                  mainAxisSpacing: 2.0, // Space between rows
+                  childAspectRatio: 1.2, // Aspect ratio of each child
+                ),
+                itemCount: 6, // Number of items in the grid
+                itemBuilder: (context, index) {
+                  return Card(
+                    elevation: 5,
+                    color: Color(0xFFFFC107),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: InkWell(
+                      onTap: () {
+                        _onGridItemTap(context, index);
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            _getGridItemIcon(index),
+                            size: 30,
+                            color: Colors.black,
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            _getGridItemText(index),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
