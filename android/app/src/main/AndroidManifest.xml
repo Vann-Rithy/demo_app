@@ -2,7 +2,7 @@
 <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:label="bizekh2024"
+        android:label="ជំនឿ-ជំនួញ"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

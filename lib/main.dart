@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'pages/home.dart'; // Ensure these files contain the respective widgets
+import 'package:quick_actions/quick_actions.dart';
+import 'pages/home.dart';
 import 'pages/video.dart';
 import 'pages/idea.dart';
 import 'pages/calendar.dart';
@@ -68,6 +69,62 @@ class _MainScreenState extends State<MainScreen> {
     MenuPage(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+
+    final QuickActions quickActions = QuickActions();
+    quickActions.initialize((String shortcutType) {
+      switch (shortcutType) {
+        case 'action_home':
+          _onItemTapped(0);
+          break;
+        case 'action_video':
+          _onItemTapped(1);
+          break;
+        case 'action_idea':
+          _onItemTapped(2);
+          break;
+        case 'action_calendar':
+          _onItemTapped(3);
+          break;
+        case 'action_menu':
+          _onItemTapped(4);
+          break;
+        default:
+          _onItemTapped(0);
+      }
+    });
+
+    quickActions.setShortcutItems(<ShortcutItem>[
+      const ShortcutItem(
+        type: 'action_home',
+        localizedTitle: 'Home',
+        icon: 'icon_home',
+      ),
+      const ShortcutItem(
+        type: 'action_video',
+        localizedTitle: 'Videos',
+        icon: 'icon_video',
+      ),
+      const ShortcutItem(
+        type: 'action_idea',
+        localizedTitle: 'Ideas',
+        icon: 'icon_idea',
+      ),
+      const ShortcutItem(
+        type: 'action_calendar',
+        localizedTitle: 'Calendar',
+        icon: 'icon_date',
+      ),
+      const ShortcutItem(
+        type: 'action_menu',
+        localizedTitle: 'Menu',
+        icon: 'icon_home',
+      ),
+    ]);
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -80,7 +137,6 @@ class _MainScreenState extends State<MainScreen> {
       appBar: _selectedIndex == 0 ? _buildAppBar() : null,
       body: _pages[_selectedIndex],
       bottomNavigationBar: Container(
-        // Set background color here
         child: BottomAppBar(
           color: Color(0xFFFFC107),
           child: Row(
@@ -104,7 +160,6 @@ class _MainScreenState extends State<MainScreen> {
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: () {
-            // Navigate to the profile page
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfilePage()),

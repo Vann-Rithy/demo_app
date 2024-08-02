@@ -45,5 +45,48 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>action_home</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Home</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ic_home</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>action_video</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Videos</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ic_video</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>action_idea</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Ideas</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ic_idea</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>action_calendar</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Calendar</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ic_calendar</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>action_menu</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Menu</string>
+			<key>UIApplicationShortcutItemIconFile</key>
+			<string>ic_menu</string>
+		</dict>
+	</array>
 </dict>
 </plist>
