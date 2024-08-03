@@ -4,19 +4,22 @@ class CalendarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Center(
+        child: Text(
+          'ប្រតិទិន',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.red, // Yellow color for the title
+          ),
+        ),
+      )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                child: Text('ប្រតិទិន',
-                    style:
-                        TextStyle(fontSize: 30, fontWeight: FontWeight.w600)),
-              ),
-            ),
             // Display days of the week
             Padding(
               padding: const EdgeInsets.only(bottom: 8.0),

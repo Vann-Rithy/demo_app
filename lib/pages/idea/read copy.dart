@@ -170,15 +170,9 @@ class ListCard extends StatelessWidget {
         ),
         title: Text(
           title,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(
-          description,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-        ),
+        subtitle: Text(description),
         onTap: () {
           Navigator.push(
             context,

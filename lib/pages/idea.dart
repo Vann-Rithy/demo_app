@@ -8,24 +8,21 @@ class IdeaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          title: Center(
+        child: Text(
+          'ចំណេះដឹង',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.red, // Yellow color for the title
+          ),
+        ),
+      )),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Title
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'ចំណេះដឹង',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red, // Color for the title
-                ),
-              ),
-            ),
-            // Grid of items
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: GridView.builder(
