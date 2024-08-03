@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'NotFoundPage.dart'; // Import the NotFoundPage
 
 class DetailPage extends StatefulWidget {
   final int id;
@@ -25,6 +26,10 @@ class _DetailPageState extends State<DetailPage> {
       setState(() {
         _title = post['title'];
       });
+    }).catchError((error) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => NotFoundPage()),
+      );
     });
   }
 
@@ -74,8 +79,14 @@ class _DetailPageState extends State<DetailPage> {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData) {
-            return Center(child: Text('No details available'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            // Navigate to NotFoundPage if no data is returned
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => NotFoundPage()),
+              );
+            });
+            return Container(); // Return an empty container while navigating
           } else {
             final post = snapshot.data!;
             final createdAtDate = DateFormat('yyyy-MM-dd')
@@ -151,7 +162,11 @@ class _DetailPageState extends State<DetailPage> {
     final response = await http.get(Uri.parse(
         'https://api.plexustrust.net/dashboard/get_post_detail.php?id=$id'));
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      final data = json.decode(response.body);
+      if (data.isEmpty) {
+        throw Exception('No data found');
+      }
+      return data;
     } else {
       throw Exception('Failed to load post details');
     }
