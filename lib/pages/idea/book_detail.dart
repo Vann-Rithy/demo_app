@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'NotFoundPage.dart'; // Import the NotFoundPage
+import 'NotFoundPage.dart';
 
 class DetailPage extends StatefulWidget {
   final int id;
