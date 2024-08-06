@@ -31,12 +31,12 @@ class IdeaPage extends StatelessWidget {
                 physics:
                     NeverScrollableScrollPhysics(), // Prevent scrolling within the GridView
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3, // Number of columns in the grid
+                  crossAxisCount: 2, // Number of columns in the grid
                   crossAxisSpacing: 2.0, // Space between columns
                   mainAxisSpacing: 2.0, // Space between rows
                   childAspectRatio: 1.2, // Aspect ratio of each child
                 ),
-                itemCount: 6, // Number of items in the grid
+                itemCount: 4, // Number of items in the grid
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 5,

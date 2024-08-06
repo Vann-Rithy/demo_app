@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'price_package.dart';
+import 'terms_and_conditions_page.dart';
 
 class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/backgrounds/background_app.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(20.0),
@@ -21,35 +30,73 @@ class MenuPage extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color:
-                        Colors.black, // Text color adjusted for better contrast
+                    color: Colors.black,
+                  ),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DisplayPricePackage3Page(),
+                      ),
+                    );
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(
+                        Icons.star_rounded,
+                        color: Colors.black,
+                      ),
+                      SizedBox(width: 8),
+                      Text('ភ្ជាប់សេវាកម្ម'),
+                    ],
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor:
+                        Color(0xFFFFC107), // Set button background color
+                    foregroundColor: Colors.black, // Text color on the button
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
+                    ),
                   ),
                 ),
                 SizedBox(height: 30),
                 _buildMenuOption(
-                  icon: Icons.home,
-                  title: 'Home',
+                  icon: Icons.account_circle,
+                  title: 'គណនី',
                   onTap: () {
                     // Navigate to Home Page
                   },
                 ),
                 _buildMenuOption(
                   icon: Icons.settings,
-                  title: 'Settings',
+                  title: 'ការកំណត់',
                   onTap: () {
                     // Navigate to Settings Page
                   },
                 ),
                 _buildMenuOption(
-                  icon: Icons.help,
-                  title: 'Help',
+                  icon: Icons.payment,
+                  title: 'ការទូទាត់',
                   onTap: () {
                     // Show Help Dialog
                   },
                 ),
                 _buildMenuOption(
+                  icon: Icons.contact_page,
+                  title: 'ទំនាក់ទំនង',
+                  onTap: () {
+                    _showContactDialog(context);
+                  },
+                ),
+                _buildMenuOption(
                   icon: Icons.info,
-                  title: 'About',
+                  title: 'អំពីកម្មវិធី',
                   onTap: () {
                     showAboutDialog(
                       context: context,
@@ -70,12 +117,195 @@ class MenuPage extends StatelessWidget {
                     );
                   },
                 ),
+                _buildMenuOption(
+                  icon: Icons.security,
+                  title: 'លក្ខខណ្ឌ',
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TermsAndConditionsPage()),
+                    );
+                  },
+                ),
+                _buildMenuOption(
+                  icon: Icons.logout,
+                  title: 'ចាកចេញ',
+                  onTap: () {
+                    _showLogoutDialog(context);
+                  },
+                ),
+                SizedBox(height: 20),
+                Text('Powered By SME News | v1.1.0'),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _showContactDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'ទំនាក់ទំនង',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'អ្នកអាចទំនាក់ទំនងយើងតាមបណ្តាញសង្គមនិងលេខទូរសព្ទដូចខាងក្រោម៖',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(height: 15),
+                InkWell(
+                  onTap: () =>
+                      _launchUrl('https://smenews-media-link.vercel.app/'),
+                  child: Container(
+                    color: Colors.grey[200], // Background color for each row
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.web, color: Colors.blue),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'បណ្ដាញសង្គមផ្លូវការ',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () => _launchUrl('https://t.me/cheavsamnang'),
+                  child: Container(
+                    color: Colors.grey[200], // Background color for each row
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.telegram, color: Colors.blue),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'Telegram',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                InkWell(
+                  onTap: () => _launchUrl('tel:+855968522285'),
+                  child: Container(
+                    color: Colors.grey[200], // Background color for each row
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.phone, color: Colors.blue),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            '+855 96 852 2285',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5),
+                InkWell(
+                  onTap: () => _launchUrl('tel:+85595727470'),
+                  child: Container(
+                    color: Colors.grey[200], // Background color for each row
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Icon(Icons.phone, color: Colors.blue),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            '+855 95 727 470',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('បិទ'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('ចាកចេញ'),
+          content: Text('តើអ្នកប្រាកដឬទេថាចង់ចាកចេញ?'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('ទេ'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('យល់ព្រម'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Add your logout logic here
+                // For example, navigate to the login page or clear user session
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Widget _buildMenuOption({
@@ -86,23 +316,32 @@ class MenuPage extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10.0),
-        padding: const EdgeInsets.all(15.0),
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         decoration: BoxDecoration(
-          color: Colors
-              .yellow, // Slightly opaque to stand out against the yellow background
+          color: Color(0xFFFFC107),
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              offset: Offset(0, 2),
+              blurRadius: 6,
+            ),
+          ],
         ),
         child: Row(
-          children: [
-            Icon(icon,
-                color: Colors.black), // Icon color adjusted for better contrast
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 30,
+              color: Colors.black,
+            ),
             SizedBox(width: 20),
             Text(
               title,
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.black, // Text color adjusted for better contrast
+                color: Colors.black,
               ),
             ),
           ],
