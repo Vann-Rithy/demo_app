@@ -46,14 +46,10 @@ class BankSelectionPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
             )),
-        onTap: () async {
+        onTap: () {
           String paymentLink = getPaymentLink(bankName, packagePrice);
           if (paymentLink.isNotEmpty) {
-            if (await _launchApp(bankName)) {
-              return; // If the app is launched, do not execute the web URL.
-            } else {
-              _launchUrl(paymentLink); // Fallback to the web URL.
-            }
+            _launchUrl(paymentLink);
           } else {
             // Handle the case where the payment link is empty
             ScaffoldMessenger.of(context).showSnackBar(
@@ -70,28 +66,6 @@ class BankSelectionPage extends StatelessWidget {
     if (!await launchUrl(uri)) {
       throw Exception('Could not launch $url');
     }
-  }
-
-  Future<bool> _launchApp(String bankName) async {
-    String? appScheme;
-    switch (bankName) {
-      case 'ABA Bank':
-        appScheme = 'aba://';
-        break;
-      case 'ACLEDA Bank':
-        appScheme = 'acleda://';
-        break;
-      // Add more cases for other banks if needed
-    }
-
-    if (appScheme != null) {
-      final Uri appUri = Uri.parse(appScheme);
-      if (await canLaunchUrl(appUri)) {
-        await launchUrl(appUri);
-        return true;
-      }
-    }
-    return false;
   }
 
   String getPaymentLink(String bankName, double amount) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:quick_actions/quick_actions.dart';
 import 'pages/home.dart';
 import 'pages/video.dart';
@@ -6,12 +7,35 @@ import 'pages/idea.dart';
 import 'pages/calendar.dart';
 import 'pages/menu.dart';
 import 'pages/profile.dart';
+import 'login_signup.dart';
+import 'login_page.dart'; // Import the login/signup page
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  void _checkLoginStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    setState(() {
+      _isLoggedIn = isLoggedIn;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,7 +62,7 @@ class MyApp extends StatelessWidget {
         ),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
-          color: Color(0xFFFFC107), // Custom color for AppBar
+          color: Color(0xFFFFC107),
           elevation: 0,
           titleTextStyle: TextStyle(
             color: Colors.white,
@@ -48,7 +72,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: MainScreen(), // Show main screen initially
+      home: _isLoggedIn
+          ? MainScreen()
+          : LoginSignupPage(), // Show main screen if logged in, else login/signup page
     );
   }
 }
@@ -167,8 +193,7 @@ class _MainScreenState extends State<MainScreen> {
           },
           child: CircleAvatar(
             radius: 20,
-            backgroundImage: AssetImage(
-                'assets/profile.jpg'), // Replace with your profile image asset
+            backgroundImage: AssetImage('assets/profile.jpg'),
           ),
         ),
       ),

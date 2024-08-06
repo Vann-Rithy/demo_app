@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'price_package.dart';
 import 'terms_and_conditions_page.dart';
+import '../login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MenuPage extends StatelessWidget {
   @override
@@ -278,26 +280,41 @@ class MenuPage extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('ចាកចេញ'),
-          content: Text('តើអ្នកប្រាកដឬទេថាចង់ចាកចេញ?'),
+          title: Text(
+            'ចាកចេញ',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+          content: Text(
+            'តើអ្នកចង់ចាកចេញពីគណនីនេះទេ?',
+            style: TextStyle(fontSize: 16),
+          ),
           actions: <Widget>[
             TextButton(
-              child: Text('ទេ'),
+              child: Text('បោះបង់'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('យល់ព្រម'),
+              child: Text('ចាកចេញ'),
               onPressed: () {
-                Navigator.of(context).pop();
-                // Add your logout logic here
-                // For example, navigate to the login page or clear user session
+                _logout(context);
               },
             ),
           ],
         );
       },
+    );
+  }
+
+  void _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (Route<dynamic> route) => false,
     );
   }
 
