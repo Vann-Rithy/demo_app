@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../screens/phone_number_prediction_page.dart';
 import '../screens/house_prediction_page.dart';
 import '../screens/vehicle_prediction_page.dart';
 import '../screens/guarantee_prediction_page.dart';
 import '../screens/name.dart';
+import '../pages/idea/book.dart';
+import '../pages/video.dart';
+import '../pages/idea/podcast.dart';
+import '../pages/idea/shop.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -138,6 +143,54 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'កម្មវិធីផ្សេងៗ',
                 style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(16.0), // Set the border radius
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    height: 120.0, // Adjust height as needed
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9, // Adjust aspect ratio as needed
+                    enableInfiniteScroll: true,
+                    viewportFraction:
+                        1.0, // Ensure the carousel items fill the screen
+                  ),
+                  items: [
+                    {'image': 'assets/bannerbook.png', 'page': bookpage()},
+                    {'image': 'assets/bannerpodcast.png', 'page': podcast()},
+                    {'image': 'assets/bannershop.png', 'page': shoppage()},
+                    {'image': 'assets/bannervideo.png', 'page': VideoPage()},
+                  ].map((item) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => item['page'] as Widget),
+                            );
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            child: Image.asset(
+                              item['image'] as String,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }).toList(),
+                ),
               ),
             ),
             Container(

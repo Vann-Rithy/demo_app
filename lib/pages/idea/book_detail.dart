@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'NotFoundPage.dart';
@@ -107,15 +108,66 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   void _downloadFile() async {
-    final url = _pdfUrl;
-    final response = await http.get(Uri.parse(url));
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File(
-        '${directory.path}/downloaded_${DateTime.now().millisecondsSinceEpoch}.pdf');
-    await file.writeAsBytes(response.bodyBytes);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('File downloaded to ${file.path}')),
+    // Show the progress dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('កំពុងទាញ'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text('Downloading...'),
+            ],
+          ),
+        );
+      },
     );
+
+    try {
+      final url = _pdfUrl;
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        // Ask the user to choose the directory
+        String? outputPath = await FilePicker.platform.getDirectoryPath(
+          dialogTitle: 'Select directory to save file',
+        );
+
+        if (outputPath != null) {
+          // Specify the filename
+          String fileName =
+              'downloaded_${DateTime.now().millisecondsSinceEpoch}.pdf';
+          final file = File('$outputPath/$fileName');
+          await file.writeAsBytes(response.bodyBytes);
+
+          // Hide the progress dialog
+          Navigator.of(context).pop();
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('File downloaded to ${file.path}')),
+          );
+        } else {
+          // Hide the progress dialog if the user cancels the file picker
+          Navigator.of(context).pop();
+        }
+      } else {
+        // Hide the progress dialog if the download fails
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to download file')),
+        );
+      }
+    } catch (e) {
+      // Hide the progress dialog if an error occurs
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
   }
 
   @override
@@ -242,48 +294,27 @@ class _DetailPageState extends State<DetailPage> {
                                   ),
                                 ],
                               ),
-                              GestureDetector(
-                                onHorizontalDragUpdate: (details) {
-                                  if (details.primaryDelta! < -20) {
-                                    _nextPage();
-                                  } else if (details.primaryDelta! > 20) {
-                                    _previousPage();
-                                  }
-                                },
-                                child: Container(
-                                  height: 600, // Adjust the height as needed
-                                  child: PDFView(
-                                    filePath: _pdfFilePath,
-                                    enableSwipe: true,
-                                    swipeHorizontal: false,
-                                    autoSpacing: true,
-                                    pageFling: true,
-                                    onRender: (pages) {
-                                      setState(() {
-                                        _totalPages = pages!;
-                                        _pageController.text =
-                                            (_currentPage + 1).toString();
-                                      });
-                                    },
-                                    onViewCreated: (controller) {
-                                      setState(() {
-                                        _pdfViewController = controller;
-                                      });
-                                    },
-                                    onPageChanged: (page, total) {
-                                      setState(() {
-                                        _currentPage = page!;
-                                        _pageController.text =
-                                            (page + 1).toString();
-                                      });
-                                    },
-                                    onError: (error) {
-                                      print(error.toString());
-                                    },
-                                    onPageError: (page, error) {
-                                      print('$page: ${error.toString()}');
-                                    },
-                                  ),
+                              Container(
+                                width: double.infinity,
+                                height: 600,
+                                child: PDFView(
+                                  filePath: _pdfFilePath,
+                                  onRender: (pages) {
+                                    setState(() {
+                                      _totalPages = pages!;
+                                    });
+                                  },
+                                  onViewCreated:
+                                      (PDFViewController pdfViewController) {
+                                    setState(() {
+                                      _pdfViewController = pdfViewController;
+                                    });
+                                  },
+                                  onPageChanged: (currentPage, totalPages) {
+                                    setState(() {
+                                      _currentPage = currentPage!;
+                                    });
+                                  },
                                 ),
                               ),
                             ],
@@ -300,16 +331,14 @@ class _DetailPageState extends State<DetailPage> {
   }
 
   Future<Map<String, dynamic>> _fetchPostDetails(int id) async {
-    final response = await http.get(Uri.parse(
-        'https://api.plexustrust.net/dashboard/get_books_detail.php?id=$id'));
+    final url =
+        'https://api.plexustrust.net/dashboard/get_books_detail.php?id=$id';
+    final response = await http.get(Uri.parse(url));
+
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      if (data.isEmpty) {
-        throw Exception('No data found');
-      }
-      return data;
+      return json.decode(response.body);
     } else {
-      throw Exception('Failed to load post details');
+      throw Exception('Failed to load post');
     }
   }
 }
