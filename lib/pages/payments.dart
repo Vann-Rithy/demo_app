@@ -83,11 +83,11 @@ class BankSelectionPage extends StatelessWidget {
     };
 
     switch (bankName) {
-      case 'ABA':
+      case 'ABA Bank':
         return 'https://link.payway.com.kh/aba?id=$id&code=$code&acc=$acc&amount=$amount&dynamic=true';
-      case 'ACLEDA':
+      case 'ACLEDA Bank':
         return acledaLinks[amount] ?? ''; // Get link based on the amount
-      case 'Wing':
+      case 'Wing Bank':
         return 'https://link.payway.com.kh/wing?id=$id&code=$code&acc=$acc&amount=$amount&dynamic=true';
       default:
         return '';
