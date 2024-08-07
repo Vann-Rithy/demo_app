@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'main.dart'; // Import main.dart to access MyApp
 
 class TermsAndConditionsPage extends StatefulWidget {
   @override
@@ -33,8 +34,11 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
 
   void _acceptTerms() {
     if (_isChecked && _isScrolledToEnd) {
-      // Handle acceptance of the terms and conditions here
-      Navigator.pop(context, 'Accepted');
+      // Navigate to MyApp or the desired widget
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MyApp()),
+      );
     } else {
       // Show an alert or feedback
       ScaffoldMessenger.of(context).showSnackBar(
@@ -93,7 +97,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                     SizedBox(height: 20),
                     _buildSectionTitle('៤. លក្ខខណ្ឌទូទាត់ប្រាក់'),
                     Text(
-                      'ការទូទាត់ប្រាក់ត្រូវតែប្រើប្រាស់វិធីសាស្ត្រដែលបានគាំទ្រនិងត្រូវតែអនុវត្តតាមលក្ខខណ្ឌដើម្បីធានាការផ្ទេរប្រាក់ល្អឥតខ្ចោះ។ អ្នកនឹងទទួលបានការជូនដំណឹងអំពីការទូទាត់ដែលបានបញ្ចប់។',
+                      'ការទូទាត់ប្រាក់ត្រូវតែប្រើប្រាស់វិធីសាស្ត្រដែលបានគាំទ្រនិងត្រូវតែអនុវត្តតាមលក្ខណៈដើម្បីធានាការផ្ទេរប្រាក់ល្អឥតខ្ចោះ។ អ្នកនឹងទទួលបានការជូនដំណឹងអំពីការទូទាត់ដែលបានបញ្ចប់។',
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 20),
@@ -118,28 +122,14 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                     SizedBox(height: 20),
                     _buildSectionTitle('៨. គោលការណ៍ឯកជនភាព'),
                     Text(
-                      'គោលការណ៍ឯកជនភាពបញ្ជាក់ពីរបៀបដែលយើងប្រមូល ការប្រើប្រាស់ និងការពារព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នក។ យើងធានាថាព័ត៌មានរបស់អ្នកត្រូវបានរក្សាទុកក្នុងសន្តិសុខ និងត្រូវបានប្រើប្រាស់តាមការអនុញ្ញាតច្បាស់លាស់របស់អ្នក។',
+                      'គោលការណ៍ឯកជនភាពបញ្ជាក់ពីរបៀបដែលយើងប្រមូល ការប្រើប្រាស់ និងការពារព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នក។ ព័ត៌មានរបស់អ្នកត្រូវបានរក្សាទុកយ៉ាងសុវត្ថិភាព ហើយត្រូវបានប្រើប្រាស់តាមគោលការណ៍នេះប៉ុណ្ណោះ។',
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 20),
-                    Row(
-                      children: <Widget>[
-                        Checkbox(
-                          value: _isChecked,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              _isChecked = value ?? false;
-                            });
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            'ខ្ញុំយល់ព្រមជាមួយនឹងលក្ខខណ្ឌនៃការប្រើប្រាស់',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      ],
+                    _buildSectionTitle('៩. ការផ្លាស់ប្តូរលក្ខណៈ'),
+                    Text(
+                      'យើងអាចផ្លាស់ប្តូរលក្ខណៈនៃលក្ខខណ្ឌការប្រើប្រាស់នៅពេលណាមួយ។ ការផ្លាស់ប្តូរនឹងត្រូវបានបង្ហោះនៅលើកម្មវិធី ហើយការប្រើប្រាស់កម្មវិធីបន្ទាប់ពីការផ្លាស់ប្តូរ នឹងត្រូវបានអនុវត្តន៍សម្រាប់លក្ខណៈថ្មី។',
+                      style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(height: 20),
                   ],
@@ -147,14 +137,27 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                ElevatedButton(
-                  onPressed:
-                      _isChecked && _isScrolledToEnd ? _acceptTerms : null,
-                  child: Text('យល់ព្រម'),
+                Checkbox(
+                  value: _isChecked,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      _isChecked = value ?? false;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Text(
+                    'ខ្ញុំបានអាន និងយល់ព្រមតាមលក្ខខណ្ឌនៃការប្រើប្រាស់នេះ។',
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
               ],
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _acceptTerms,
+              child: Text('យល់ព្រម'),
             ),
           ],
         ),

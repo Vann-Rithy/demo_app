@@ -1,94 +1,156 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart'; // Ensure this file exists
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'otp_verification_page.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignupPage extends StatefulWidget {
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  _SignupPageState createState() => _SignupPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+class _SignupPageState extends State<SignupPage> {
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  bool _isPasswordMatched = true;
+  bool _isLoading = false;
 
-  Future<void> _signUp() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      // Replace with your sign-up logic
-      String username = _usernameController.text;
-      String password = _passwordController.text;
-      String confirmPassword = _confirmPasswordController.text;
+  Future<void> _register() async {
+    final String phone = _phoneController.text.trim();
+    final String password = _passwordController.text.trim();
+    final String confirmPassword = _confirmPasswordController.text.trim();
 
-      if (password == confirmPassword) {
-        // Save user credentials and navigate
-        Navigator.pushReplacement(
+    if (password != confirmPassword) {
+      setState(() {
+        _isPasswordMatched = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isPasswordMatched = true;
+      _isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.plexustrust.net/dashboard/sigup.php'),
+        body: {
+          'phone': phone,
+          'password': password,
+        },
+      );
+
+      final data = json.decode(response.body);
+      if (data['success']) {
+        // Save login status
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        await prefs.setString('phone', phone);
+
+        // Navigate to OTP verification page
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(
+            builder: (context) => OTPVerificationPage(phone: phone),
+          ),
         );
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Passwords do not match')),
-        );
+        // Show error message
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(data['message']),
+        ));
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('An unexpected error occurred. Please try again later.'),
+      ));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your username';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                decoration: InputDecoration(labelText: 'Confirm Password'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _signUp,
-                child: Text('Sign Up'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Back to Login'),
-              ),
-            ],
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset(
+            'assets/icons/icons_back.png',
+            width: 25,
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('ចុះឈ្មោះប្រើប្រាស់', style: TextStyle(color: Colors.red)),
+        backgroundColor: Colors.white,
+        automaticallyImplyLeading: false,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/logo.png',
+              width: 150,
+              height: 150,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'ជំនឿ-ជំនួញ',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.red,
+                fontFamily: 'Khmer OS Moul',
+              ),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _phoneController,
+              decoration: InputDecoration(labelText: 'Phone Number'),
+              keyboardType: TextInputType.phone,
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _confirmPasswordController,
+              decoration: InputDecoration(
+                labelText: 'Confirm Password',
+                errorText: _isPasswordMatched ? null : 'Passwords do not match',
+              ),
+              obscureText: true,
+            ),
+            SizedBox(height: 20),
+            _isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: _register,
+                    child: Text('ចុះឈ្មោះ'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Color(0xFFFFC107), // Set button color here
+                      minimumSize:
+                          Size(double.infinity, 50), // Full width button
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      padding: EdgeInsets.symmetric(vertical: 14),
+                      textStyle:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+          ],
         ),
       ),
     );

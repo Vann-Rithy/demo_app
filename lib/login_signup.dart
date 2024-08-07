@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login_page.dart';
+import 'signup_page.dart'; // Import the SignupPage
 
 class LoginSignupPage extends StatelessWidget {
   @override
@@ -55,7 +56,12 @@ class LoginSignupPage extends StatelessWidget {
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the signup page
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SignupPage()), // Navigate to the SignupPage
+                      );
                     },
                     child: Text('ចុះឈ្មោះប្រើប្រាស់'),
                     style: ElevatedButton.styleFrom(

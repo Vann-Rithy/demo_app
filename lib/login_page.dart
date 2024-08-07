@@ -103,7 +103,6 @@ class _LoginPageState extends State<LoginPage> {
           },
         ),
         title: Text('ចូលប្រើប្រាស់', style: TextStyle(color: Colors.red)),
-        centerTitle: true,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
       ),
