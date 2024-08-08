@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:carousel_slider/carousel_slider.dart'; // Add this import
+import 'package:carousel_slider/carousel_slider.dart';
 import '../screens/phone_number_prediction_page.dart';
 import '../screens/house_prediction_page.dart';
 import '../screens/vehicle_prediction_page.dart';
@@ -148,51 +148,51 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 10),
-            // ClipRRect(
-            //   borderRadius:
-            //       BorderRadius.circular(16.0), // Set the border radius
-            //   child: CarouselSlider(
-            //     options: CarouselOptions(
-            //       height: 120.0, // Adjust height as needed
-            //       autoPlay: true,
-            //       autoPlayInterval: Duration(seconds: 3),
-            //       autoPlayAnimationDuration: Duration(milliseconds: 800),
-            //       autoPlayCurve: Curves.fastOutSlowIn,
-            //       enlargeCenterPage: true,
-            //       aspectRatio: 16 / 9, // Adjust aspect ratio as needed
-            //       enableInfiniteScroll: true,
-            //       viewportFraction:
-            //           1.0, // Ensure the carousel items fill the screen
-            //     ),
-            //     items: [
-            //       {'image': 'assets/bannerbook.png', 'page': bookpage()},
-            //       {'image': 'assets/bannerpodcast.png', 'page': podcast()},
-            //       {'image': 'assets/bannershop.png', 'page': shoppage()},
-            //       {'image': 'assets/bannervideo.png', 'page': VideoPage()},
-            //     ].map((item) {
-            //       return Builder(
-            //         builder: (BuildContext context) {
-            //           return GestureDetector(
-            //             onTap: () {
-            //               Navigator.push(
-            //                 context,
-            //                 MaterialPageRoute(
-            //                     builder: (context) => item['page'] as Widget),
-            //               );
-            //             },
-            //             child: Container(
-            //               width: MediaQuery.of(context).size.width,
-            //               child: Image.asset(
-            //                 item['image'] as String,
-            //                 fit: BoxFit.cover,
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       );
-            //     }).toList(),
-            //   ),
-            // ),
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(16.0), // Set the border radius
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 120.0, // Adjust height as needed
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9, // Adjust aspect ratio as needed
+                  enableInfiniteScroll: true,
+                  viewportFraction:
+                      1.0, // Ensure the carousel items fill the screen
+                ),
+                items: [
+                  {'image': 'assets/bannerbook.png', 'page': bookpage()},
+                  {'image': 'assets/bannerpodcast.png', 'page': podcast()},
+                  {'image': 'assets/bannershop.png', 'page': shoppage()},
+                  {'image': 'assets/bannervideo.png', 'page': VideoPage()},
+                ].map((item) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => item['page'] as Widget),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.asset(
+                            item['image'] as String,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
             Container(
               margin: const EdgeInsets.only(top: 16.0),
               child: GridView.builder(
