@@ -5,7 +5,7 @@ class GuaranteePredictionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Guarantee Prediction'),
+        title: Text('ទស្សន៍ទាយលេខកុងធានាគា'),
       ),
       body: Center(
         child: Text('Guarantee Prediction Page'),

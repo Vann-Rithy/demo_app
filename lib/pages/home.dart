@@ -49,51 +49,6 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipRRect(
-              borderRadius:
-                  BorderRadius.circular(16.0), // Set the border radius
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  height: 120.0, // Adjust height as needed
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9, // Adjust aspect ratio as needed
-                  enableInfiniteScroll: true,
-                  viewportFraction:
-                      1.0, // Ensure the carousel items fill the screen
-                ),
-                items: [
-                  {'image': 'assets/images1.jpg', 'page': bookpage()},
-                  {'image': 'assets/images1.jpg', 'page': podcast()},
-                  {'image': 'assets/images1.jpg', 'page': shoppage()},
-                  {'image': 'assets/images1.jpg', 'page': VideoPage()},
-                ].map((item) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => item['page'] as Widget),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Image.asset(
-                            item['image'] as String,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-            ),
             SizedBox(height: 16), // Add some spacing after the carousel
             Container(
               margin: const EdgeInsets.symmetric(vertical: 5.0),
@@ -158,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            SizedBox(height: 10),
             Center(
               child: Text(
                 'សាសនាផ្សេងៗ',
@@ -177,6 +133,10 @@ class _HomePageState extends State<HomePage> {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
+                  _buildCategoryChip('សាសនាព្រះពុទ្ធ'),
+                  _buildCategoryChip('សាសនាកាតូលិក'),
+                  _buildCategoryChip('សាសនាឥស្លាម'),
+                  _buildCategoryChip('ព្យាករណ៍សាស្រ្ដ'),
                   // Add more categories here
                 ],
               ),
@@ -185,6 +145,52 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'កម្មវិធីផ្សេងៗ',
                 style: TextStyle(fontSize: 20, color: Colors.black),
+              ),
+            ),
+            SizedBox(height: 10),
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(16.0), // Set the border radius
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  height: 120.0, // Adjust height as needed
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 3),
+                  autoPlayAnimationDuration: Duration(milliseconds: 800),
+                  autoPlayCurve: Curves.fastOutSlowIn,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9, // Adjust aspect ratio as needed
+                  enableInfiniteScroll: true,
+                  viewportFraction:
+                      1.0, // Ensure the carousel items fill the screen
+                ),
+                items: [
+                  {'image': 'assets/bannerbook.png', 'page': bookpage()},
+                  {'image': 'assets/bannerpodcast.png', 'page': podcast()},
+                  {'image': 'assets/bannershop.png', 'page': shoppage()},
+                  {'image': 'assets/bannervideo.png', 'page': VideoPage()},
+                ].map((item) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => item['page'] as Widget),
+                          );
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.asset(
+                            item['image'] as String,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
               ),
             ),
             Container(
@@ -302,13 +308,13 @@ class _HomePageState extends State<HomePage> {
   IconData _getGridItemIcon(int index) {
     switch (index) {
       case 0:
-        return Icons.home;
+        return Icons.phone;
       case 1:
-        return Icons.directions_car;
+        return Icons.home;
       case 2:
-        return Icons.business;
+        return Icons.car_crash_sharp;
       case 3:
-        return Icons.person;
+        return Icons.card_giftcard;
       case 4:
         return Icons.group;
       case 5:
@@ -321,19 +327,19 @@ class _HomePageState extends State<HomePage> {
   String _getGridItemText(int index) {
     switch (index) {
       case 0:
-        return 'សំរាប់ផ្ទះ';
+        return 'លេខទូរសព្ទ';
       case 1:
-        return 'សំរាប់រថយន្ត';
+        return 'លេខផ្ទះ';
       case 2:
-        return 'សំរាប់អាជីវកម្ម';
+        return 'ផ្លាកលេខឡាន';
       case 3:
-        return 'សំរាប់ខ្លួន';
+        return 'លេខកុងធានាគា';
       case 4:
-        return 'សំរាប់ក្រុម';
+        return 'អក្សរឡាតាំង';
       case 5:
-        return 'ផ្ទាល់ខ្លួន';
+        return 'ប្រជ្រុយ';
       default:
-        return 'អត្ថន័យ';
+        return 'demo';
     }
   }
 
@@ -364,10 +370,30 @@ class _HomePageState extends State<HomePage> {
         );
         break;
       case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => NamePredictionPage()),
+        );
+        break;
+      case 5:
         break;
       default:
         // Handle other cases or show an error
         break;
     }
   }
+}
+
+Widget _buildCategoryChip(String label) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+    child: Chip(
+      label: Text(label),
+      backgroundColor: Color(0xFFFFC107), // Yellow color for the chip
+      labelStyle: TextStyle(color: Colors.black),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+    ),
+  );
 }

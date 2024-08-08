@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "482580030687",
+    "project_id": "beliefs---business",
+    "storage_bucket": "beliefs---business.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:482580030687:android:507d9ce03de1850e62f56a",
+        "android_client_info": {
+          "package_name": "com.example.bizekh2024"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnmB6nTTw6cO6C9m5-1XghoMlJviVAUsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
